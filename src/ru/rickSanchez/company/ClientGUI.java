@@ -106,7 +106,25 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
         //при нажатии на кнопку отправляем сообщеник
         btnSend.addActionListener(this);
-
+        //обработка событий от нажатия кнопки Enter
+        tfMessage.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                        String msg = tfMessage.getText();
+                        log.append(msg+"\n");
+                        tfMessage.setText("");
+                    try(FileWriter writer = new FileWriter(file, true)) {
+                        writer.write(msg + "\n");
+                        writer.flush();
+                    } catch(FileNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch(IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
 
         //Добавляем лог и наших клиентов
         add(scrUser, BorderLayout.EAST);
@@ -122,7 +140,18 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
-        
+        }else if(src == btnSend ){
+            String msg = tfMessage.getText();
+            log.append(msg+"\n");
+            tfMessage.setText("");
+            try(FileWriter writer = new FileWriter(file, true)) {
+                    writer.write(msg + "\n");
+                    writer.flush();
+                } catch(FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch(IOException ex) {
+                    ex.printStackTrace();
+            }
         }else {
             throw new RuntimeException("Unknown source:" + src);
         }

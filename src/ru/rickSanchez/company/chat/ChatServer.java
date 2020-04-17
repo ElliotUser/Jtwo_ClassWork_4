@@ -1,6 +1,6 @@
 package ru.rickSanchez.company.chat;
 
-import ru.gb.jtwo.e_lesson.online.network.ServerSocketThread;
+import ru.rickSanchez.company.network.ServerSocketThread;
 
 public class ChatServer {
 
